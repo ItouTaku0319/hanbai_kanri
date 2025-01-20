@@ -7,6 +7,7 @@ const Layout = ({ children }) => {
   const location = useLocation();
 
   const menuItems = [
+    { path: '/products', icon: Package, label: '商品管理' },  // 追加
     { path: '/orders', icon: Package, label: '受注管理' },
     { path: '/shipments', icon: Truck, label: '出荷管理' },
     { path: '/inventory', icon: Database, label: '在庫管理' },
