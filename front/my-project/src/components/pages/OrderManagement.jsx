@@ -1,9 +1,11 @@
 // src/components/pages/OrderManagement.jsx
 import React, { useState } from 'react';
 import { Upload, RefreshCw } from 'lucide-react';
+import { useNavigate } from 'react-router-dom'; // 追加
 import OrderDetailModal from '../modals/OrderDetailModal';
 
 const OrderManagement = () => {
+  const navigate = useNavigate(); // 追加
   const [orders, setOrders] = useState([
     {
       jyutyu_no: '001',
@@ -33,6 +35,15 @@ const OrderManagement = () => {
   const handleCloseModal = () => {
     setSelectedOrder(null);
   };
+
+  const handleShipping = () => {
+    navigate(`/shipments`);
+  };
+
+    // 追加出荷画面への遷移ハンドラーを追加
+    const handleAdditionalShipping = (orderNumber) => {
+      navigate(`/shipping/additional/${orderNumber}`);
+    };
 
   return (
     <div className="space-y-6">
@@ -84,6 +95,18 @@ const OrderManagement = () => {
                       onClick={() => handleShowDetail(order)}
                     >
                       詳細
+                    </button>
+                    <button
+                      className="px-3 py-1 text-sm"
+                      onClick={() => handleShipping()} // 修正
+                    >
+                      出荷
+                    </button>
+                    <button
+                      className="px-3 py-1 text-sm text-yellow-600 hover:bg-yellow-50 rounded ml-2"
+                      onClick={() => handleAdditionalShipping(order.jyutyu_no)} // 修正
+                    >
+                      追加出荷
                     </button>
                   </td>
                 </tr>
