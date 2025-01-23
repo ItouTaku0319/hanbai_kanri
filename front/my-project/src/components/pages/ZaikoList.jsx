@@ -4,9 +4,9 @@ import { Search } from "lucide-react";
 const ZaikoList = () => {
   // サンプルデータ
   const [inventory, setInventory] = useState([
-    { id: 1, code: "ITEM001", name: "商品A", quantity: 100, unit: "個", reorderPoint: 20 },
-    { id: 2, code: "ITEM002", name: "商品B", quantity: 50, unit: "箱", reorderPoint: 10 },
-    { id: 3, code: "ITEM003", name: "商品C", quantity: 75, unit: "個", reorderPoint: 15 },
+    { id: 1, code: "ITEM001", name: "商品A", zaiko_su: 100, unit: "個", reorderPoint: 20 },
+    { id: 2, code: "ITEM002", name: "商品B", zaiko_su: 50, unit: "箱", reorderPoint: 10 },
+    { id: 3, code: "ITEM003", name: "商品C", zaiko_su: 75, unit: "個", reorderPoint: 15 },
   ]);
   const [searchQuery, setSearchQuery] = useState("");
 
@@ -17,8 +17,8 @@ const ZaikoList = () => {
 );
 
   // 在庫状態に基づく行の色分け用のスタイル
-  const getRowStyle = (quantity, reorderPoint) => {
-    if (quantity <= reorderPoint) {
+  const getRowStyle = (zaiko_su, reorderPoint) => {
+    if (zaiko_su <= reorderPoint) {
       return "bg-red-100";
     }
     return "";
@@ -38,8 +38,9 @@ const ZaikoList = () => {
         id: item.id || 0,
         code: item.syohin_code || "",
         name: item.syohin_name || "",
-        quantity: item.quantity || 0,
-        unit: item.unit || "",
+        zaiko_su: item.zaiko_su || 0,
+        unit: item.stock_unit || "",
+        price: item.price || "",
         reorderPoint: item.alert_threshold || 0
     })));
       
@@ -81,6 +82,7 @@ const ZaikoList = () => {
               <th className="p-2 text-left">商品名</th>
               <th className="p-2 text-right">在庫数</th>
               <th className="p-2 text-center">単位</th>
+              <th className="p-2 text-center">単価</th>
               <th className="p-2 text-right">発注点</th>
               <th className="p-2 text-center">アクション</th>
             </tr>
@@ -89,12 +91,13 @@ const ZaikoList = () => {
             {filteredInventory.map(item => (
               <tr 
               key={`${item.id}-${item.code}`}
-                className={`border-b border-gray-200 ${getRowStyle(item.quantity, item.reorderPoint)}`}
+                className={`border-b border-gray-200 ${getRowStyle(item.zaiko_su, item.reorderPoint)}`}
               >
                 <td className="p-2">{item.code}</td>
                 <td className="p-2">{item.name}</td>
-                <td className="p-2 text-right">{item.quantity ? item.quantity.toLocaleString() : ''}</td>
+                <td className="p-2 text-right">{item.zaiko_su ? item.zaiko_su.toLocaleString() : ''}</td>
                 <td className="p-2 text-center">{item.unit}</td>
+                <td className="p-2 text-center">{item.price}</td>
                 <td className="p-2 text-right">{item.reorderPoint ? item.reorderPoint.toLocaleString() : ''}</td>
                 <td className="p-2 text-center">
                   <div className="flex justify-center gap-2">

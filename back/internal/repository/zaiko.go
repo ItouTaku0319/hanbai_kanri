@@ -18,7 +18,7 @@ func (r *ZaikoRepository) GetZaikoList() ([]models.Zaiko, error) {
 	var zaikoList []models.Zaiko
 
 	err := r.db.Table("zaiko").
-		Select("zaiko.*, syohin.syohin_name, syohin.stock_unit").
+		Select("zaiko.*, syohin.syohin_name AS syohin_name, syohin.stock_unit AS stock_unit, syohin.price AS price").
 		Joins("LEFT JOIN syohin ON zaiko.syohin_code = syohin.syohin_code").
 		Find(&zaikoList).Error
 
