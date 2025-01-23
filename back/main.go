@@ -2,48 +2,57 @@ package main
 
 import (
 	"log"
-	"net/http"
+	"time"
+
+	"github.com/gin-contrib/cors"
+	"github.com/gin-gonic/gin"
 
 	"hanbai_kanri/config"
 	"hanbai_kanri/internal/handler"
 	"hanbai_kanri/internal/repository"
-
-	"github.com/gorilla/mux"
-	"github.com/rs/cors"
+	"hanbai_kanri/internal/service"
 )
 
 func main() {
-	// データベース初期化
 	if err := config.InitDatabase(); err != nil {
 		log.Fatalf("Failed to initialize database: %v", err)
 	}
 
-	// リポジトリの初期化
-	inventoryRepo := repository.NewInventoryRepository()
-	inventoryHandler := handler.NewInventoryHandler(inventoryRepo)
+	// 依存関係の初期化
+	zaikoRepo := repository.NewZaikoRepository(config.DB)
+	zaikoService := service.NewZaikoService(zaikoRepo)
+	zaikoHandler := handler.NewZaikoHandler(zaikoService)
 
-	// ルーターの初期化
-	r := mux.NewRouter()
+	r := gin.Default()
 
-	// エンドポイントの設定
-	r.HandleFunc("/inventory", inventoryHandler.GetAllInventory).Methods(http.MethodGet)
-
+	// ✅ CORS ミドルウェアの適用
+	r.Use(cors.New(cors.Config{
+		AllowOrigins:     []string{"*"}, // フロントエンドのURL
+		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
+		AllowHeaders:     []string{"*"},
+		ExposeHeaders:    []string{"*"},
+		AllowCredentials: false, // クッキーや認証情報を含める場合
+		MaxAge:           12 * time.Hour,
+	}))
 	// CORS設定
-	c := cors.New(cors.Options{
-		AllowedOrigins:   []string{"*"}, // すべてのオリジンを許可
-		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "OPTIONS", "HEAD", "PATCH"},
-		AllowedHeaders:   []string{"*"}, // すべてのヘッダーを許可
-		ExposedHeaders:   []string{"*"},
-		AllowCredentials: false, // '*'を使用する場合はfalseにする必要がある
-		Debug:            true,
+	// c := cors.New(cors.Options{
+	// 	AllowedOrigins:   []string{"*"}, // すべてのオリジンを許可
+	// 	AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "OPTIONS", "HEAD", "PATCH"},
+	// 	AllowedHeaders:   []string{"*"}, // すべてのヘッダーを許可
+	// 	ExposedHeaders:   []string{"*"},
+	// 	AllowCredentials: false, // '*'を使用する場合はfalseにする必要がある
+	// 	Debug:            true,
+	// })
+	// ✅ `OPTIONS` リクエストを許可 (CORS プリフライト対応)
+	r.OPTIONS("/*path", func(c *gin.Context) {
+		c.Status(204)
 	})
 
-	// ハンドラーの設定
-	handler := c.Handler(r)
+	// ルートの設定
+	r.GET("/zaiko", zaikoHandler.GetZaikoList)
 
-	// サーバー起動
 	log.Println("Server starting on :8080")
-	if err := http.ListenAndServe(":8080", handler); err != nil {
+	if err := r.Run(":8080"); err != nil {
 		log.Fatalf("Failed to start server: %v", err)
 	}
 }

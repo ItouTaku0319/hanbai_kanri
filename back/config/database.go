@@ -25,7 +25,8 @@ var DB *gorm.DB
 func InitDatabase() error {
 	config := DatabaseConfig{
 		// docker-compose.ymlの環境変数に合わせたデフォルト値
-		Host:     getEnv("DB_HOST", "postgres"), // コンテナ名がpostgres
+		// Host:     getEnv("DB_HOST", "postgres"), // コンテナ名がpostgres
+		Host:     getEnv("DB_HOST", "localhost"),
 		Port:     getEnv("DB_PORT", "5432"),
 		User:     getEnv("DB_USER", "vendor_user"),     // POSTGRES_USERの値
 		Password: getEnv("DB_PASSWORD", "vendor_pass"), // POSTGRES_PASSWORDの値
