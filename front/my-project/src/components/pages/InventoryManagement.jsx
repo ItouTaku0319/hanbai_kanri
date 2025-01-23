@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Search } from "lucide-react";
 
 const InventoryManagement = () => {
@@ -23,6 +23,40 @@ const InventoryManagement = () => {
     }
     return "";
   };
+
+  const fetchProducts = async () => {
+    try {
+      console.log('Fetching inventory...');
+      const response = await fetch('http://localhost:8080/inventory', {
+        method: 'GET',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        },
+        mode: 'cors',
+        cache: 'no-cache',
+        credentials: 'omit'
+      });
+      
+      console.log('Response status:', response.status);
+      
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error('Error response:', errorText);
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
+      const data = await response.json();
+      console.log('Received data:', data);
+      setInventory(Array.isArray(data) ? data : []);
+    } catch (error) {
+      console.error('Error details:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchProducts();
+  }, []);
 
   return (
     <div className="w-full max-w-6xl mx-auto bg-white rounded-lg shadow p-6">
@@ -65,9 +99,9 @@ const InventoryManagement = () => {
               >
                 <td className="p-2">{item.code}</td>
                 <td className="p-2">{item.name}</td>
-                <td className="p-2 text-right">{item.quantity.toLocaleString()}</td>
+                <td className="p-2 text-right">{item.quantity ? item.quantity.toLocaleString() : ''}</td>
                 <td className="p-2 text-center">{item.unit}</td>
-                <td className="p-2 text-right">{item.reorderPoint.toLocaleString()}</td>
+                <td className="p-2 text-right">{item.reorderPoint ? item.reorderPoint.toLocaleString() : ''}</td>
                 <td className="p-2 text-center">
                   <div className="flex justify-center gap-2">
                     <button className="px-3 py-1 text-sm border border-gray-300 rounded hover:bg-gray-100">
