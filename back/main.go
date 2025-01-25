@@ -9,11 +9,17 @@ import (
 
 	"hanbai_kanri/config"
 	"hanbai_kanri/internal/handler"
+	"hanbai_kanri/internal/logger"
 	"hanbai_kanri/internal/repository"
 	"hanbai_kanri/internal/service"
 )
 
 func main() {
+	// ロガーの初期化
+	logger.InitLogger()
+
+	logger.InfoLogger.Println("Server is starting...")
+
 	if err := config.InitDatabase(); err != nil {
 		log.Fatalf("Failed to initialize database: %v", err)
 	}
