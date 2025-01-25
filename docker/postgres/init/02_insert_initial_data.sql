@@ -5,21 +5,20 @@ INSERT INTO kbn_item (kbn_name, kbn_value, kbn_value_name, hyoji_jun) VALUES
 ('ITEM_CATEGORY', '2', '防具', 2),
 ('ITEM_CATEGORY', '3', '素材', 3),
 ('ITEM_CATEGORY', '4', '鉱石', 4),
-('ITEM_SUB_CATEGORY_1', '1', '剣', 1),
-('ITEM_SUB_CATEGORY_1', '2', '斧', 2),
--- 防具のサブカテゴリ
-('ITEM_SUB_CATEGORY_2', '1', '盾', 1),
-('ITEM_SUB_CATEGORY_2', '2', '鎧', 2);
+('ITEM_SUB_CATEGORY', '11', '剣', 1),
+('ITEM_SUB_CATEGORY', '12', '斧', 2),
+('ITEM_SUB_CATEGORY', '21', '盾', 1),
+('ITEM_SUB_CATEGORY', '22', '鎧', 2);
 
 -- 初期商品データ
-INSERT INTO syohin (syohin_code, syohin_name, price, syohin_type, category, stock_unit, is_active) VALUES
-('11001', '鉄の剣', 100, true, '1', '個', true),
-('11002', '鋼の剣', 150, true, '1', '個', true),
-('21001', '鉄の盾', 80, true, '2', '個', true),
-('21002', 'おなべのふた', 20, true, '2', '個', true),
-('30001', '鉄インゴット', 30, false, '3', '個', true),
-('30002', '木の棒', 5, false, '3', '個', true),
-('40001', '鉄鉱石', 10, false, '4', '個', true);
+INSERT INTO syohin (syohin_code, syohin_name, price, syohin_type, category, sub_category, stock_unit, is_active) VALUES
+('11001', '鉄の剣', 100, true, '1', '1', '個', true),
+('11002', '鋼の剣', 150, true, '1', '1', '個', true),
+('21001', '鉄の盾', 80, true, '2', '1', '個', true),
+('21002', 'おなべのふた', 20, true, '2', '1', '個', true),
+('30001', '鉄インゴット', 30, false, '3', '0', '個', true),
+('30002', '木の棒', 5, false, '3', '0', '個', true),
+('40001', '鉄鉱石', 10, false, '4', '0', '個', true);
 
 -- 商品構成データ
 INSERT INTO syohin_kosei (syohin_code, sozai, sozai_su) VALUES

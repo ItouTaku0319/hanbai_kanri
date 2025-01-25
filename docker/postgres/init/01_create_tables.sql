@@ -139,8 +139,11 @@ CREATE TABLE syohin (
     syohin_name TEXT NOT NULL,
     price INTEGER NOT NULL,
     syohin_type BOOLEAN DEFAULT false, -- falseだったら商品ではない＝素材
-    category TEXT NOT NULL, --区分値マスタに値を持ってあげたほうが良さそう。
+    category TEXT NOT NULL,
+    sub_category TEXT,
     stock_unit TEXT NOT NULL,
+    safety_stock INTEGER DEFAULT 0,  -- 安全在庫数
+    reorder_point INTEGER DEFAULT 0, -- 発注点
     note TEXT,
     is_active BOOLEAN DEFAULT false,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
@@ -153,7 +156,10 @@ COMMENT ON COLUMN syohin.syohin_name IS '商品名';
 COMMENT ON COLUMN syohin.price IS '価格';
 COMMENT ON COLUMN syohin.syohin_type IS '商品素材タイプ';
 COMMENT ON COLUMN syohin.category IS 'カテゴリー';
+COMMENT ON COLUMN syohin.sub_category IS 'サブカテゴリー';
 COMMENT ON COLUMN syohin.stock_unit IS '商品単位';
+COMMENT ON COLUMN syohin.safety_stock IS '安全在庫数';
+COMMENT ON COLUMN syohin.reorder_point IS '発注点';
 COMMENT ON COLUMN syohin.note IS '備考';
 COMMENT ON COLUMN syohin.is_active IS '有効状態';
 COMMENT ON COLUMN syohin.created_at IS '作成日時';

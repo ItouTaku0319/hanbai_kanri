@@ -1,23 +1,19 @@
 // ファイル: internal/service/zaiko.go
-
 package service
 
 import (
-	// models は hanbai_kanri/models に
-	"hanbai_kanri/models"
-
-	// repository は internal/repository/zaiko.go (package repository)
 	"hanbai_kanri/internal/repository"
+	"hanbai_kanri/models"
 )
 
 type ZaikoService struct {
 	repo *repository.ZaikoRepository
 }
 
-func NewZaikoService(repo *repository.ZaikoRepository) *ZaikoService {
-	return &ZaikoService{repo: repo}
+func NewZaikoService(r *repository.ZaikoRepository) *ZaikoService {
+	return &ZaikoService{repo: r}
 }
 
-func (s *ZaikoService) GetZaikoList() ([]models.Zaiko, error) {
-	return s.repo.GetZaikoList()
+func (s *ZaikoService) GetZaikoList(code string, isLeftMatch bool, name string, zaikoSuMax int, lowStockOnly bool) ([]models.Zaiko, error) {
+	return s.repo.GetZaikoList(code, isLeftMatch, name, zaikoSuMax, lowStockOnly)
 }
