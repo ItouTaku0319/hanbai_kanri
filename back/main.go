@@ -33,7 +33,10 @@ func main() {
 
 	// ✅ CORS ミドルウェアの適用
 	r.Use(cors.New(cors.Config{
-		AllowOrigins:     []string{"*"}, // フロントエンドのURL
+		AllowOrigins: []string{"*"}, // フロントエンドのURL
+		// 後々変更する
+		// AllowOrigins:     []string{"http://localhost:3000"},
+		// AllowCredentials: true, // 認証情報を許可
 		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
 		AllowHeaders:     []string{"*"},
 		ExposeHeaders:    []string{"*"},

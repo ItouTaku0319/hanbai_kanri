@@ -21,7 +21,8 @@ func InitLogger() {
 	// ログファイルを開く（なければ作成、追記モード）
 	logFile, err := os.OpenFile(logFilePath, os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0666)
 	if err != nil {
-		log.Fatal("Failed to open log file:", err)
+		log.Printf("WARNING: Failed to open log file: %v\n", err)
+		return
 	}
 
 	// ロガーを作成（標準出力にも出力する場合は log.MultiWriter を使用）

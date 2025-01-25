@@ -30,11 +30,14 @@ func (s *productService) CreateProduct(ctx context.Context, product *models.Prod
 	if product.Name == "" {
 		return errors.New("product name is required")
 	}
-	if product.Price < 0 {
-		return errors.New("price must be positive")
+	if len(product.Name) > 100 {
+		return errors.New("product name must be 100 characters or less")
+	}
+	if product.Price <= 0 { // 0 も許可しない
+		return errors.New("price must be greater than zero")
 	}
 	if product.Stock < 0 {
-		return errors.New("stock must be positive")
+		return errors.New("stock must be zero or greater")
 	}
 	return s.repo.Create(ctx, product)
 }

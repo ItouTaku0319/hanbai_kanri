@@ -2,7 +2,6 @@ package repository
 
 import (
 	"context"
-	"hanbai_kanri/config"
 	"hanbai_kanri/models"
 
 	"gorm.io/gorm"
@@ -20,9 +19,9 @@ type productRepository struct {
 	db *gorm.DB
 }
 
-func NewProductRepository() ProductRepository {
+func NewProductRepository(db *gorm.DB) ProductRepository {
 	return &productRepository{
-		db: config.DB,
+		db: db,
 	}
 }
 

@@ -79,7 +79,7 @@ func InitDatabase() error {
 	log.Println("Database connection pool configured successfully")
 
 	// マイグレーションの実行
-	if err := DB.AutoMigrate(&models.Product{}); err != nil {
+	if err := DB.AutoMigrate(&models.Product{}, &models.Zaiko{}, &models.Syohin{}, &models.Customer{}, &models.Order{}, &models.OrderItem{}); err != nil {
 		log.Printf("Failed to migrate database: %v\n", err)
 		return fmt.Errorf("failed to migrate database: %v", err)
 	}
