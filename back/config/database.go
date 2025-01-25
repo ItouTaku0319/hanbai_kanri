@@ -2,7 +2,6 @@ package config
 
 import (
 	"fmt"
-	"hanbai_kanri/models"
 	"log"
 	"os"
 	"time"
@@ -79,10 +78,10 @@ func InitDatabase() error {
 	log.Println("Database connection pool configured successfully")
 
 	// マイグレーションの実行
-	if err := DB.AutoMigrate(&models.Product{}, &models.Zaiko{}, &models.Syohin{}, &models.Customer{}, &models.Order{}, &models.OrderItem{}); err != nil {
-		log.Printf("Failed to migrate database: %v\n", err)
-		return fmt.Errorf("failed to migrate database: %v", err)
-	}
+	// if err := DB.AutoMigrate(&models.Product{}, &models.Zaiko{}, &models.Syohin{}, &models.Customer{}, &models.Order{}, &models.OrderItem{}); err != nil {
+	// 	log.Printf("Failed to migrate database: %v\n", err)
+	// 	return fmt.Errorf("failed to migrate database: %v", err)
+	// }
 	log.Println("Database migration completed successfully")
 
 	return nil
