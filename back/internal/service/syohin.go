@@ -16,8 +16,8 @@ func NewSyohinService(r *repository.SyohinRepository) *SyohinService {
 }
 
 // GetSyohinList は商品一覧を取得する
-func (s *SyohinService) GetSyohinList(code string, isLeftMatch bool, name string, syohinType *bool, lowStockOnly bool) ([]models.Syohin, error) {
-	syohinList, err := s.Repo.GetSyohinList(code, isLeftMatch, name, syohinType, lowStockOnly)
+func (s *SyohinService) GetSyohinList(code string, isLeftMatch bool, name string, syohinType *bool, category string, subCategory string, lowStockOnly bool) ([]models.Syohin, error) {
+	syohinList, err := s.Repo.GetSyohinList(code, isLeftMatch, name, syohinType, category, subCategory, lowStockOnly)
 	if err != nil {
 		return nil, utils.WrapError("SyohinService.GetSyohinList", err)
 	}

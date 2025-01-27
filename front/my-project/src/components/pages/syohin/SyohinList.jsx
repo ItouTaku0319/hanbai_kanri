@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import InputField from "../../common/InputField";
 import CheckboxField from "../../common/CheckboxField";
 import Button from "../../common/Button";
 import Table from "../../common/Table";
+import ComboBox from "../../common/ComboBox";
 
 const SyohinList = () => {
   // 商品データの状態管理
@@ -20,6 +21,11 @@ const SyohinList = () => {
   // 商品構成表示の状態管理
   const [expandedRows, setExpandedRows] = useState(new Set());
   const [koseiData, setKoseiData] = useState({});
+
+  const [categories, setCategories] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [subCategories, setSubCategories] = useState([]);
+  const [selectedSubCategory, setSelectedSubCategory] = useState(null);
 
   const columns = [
     {
@@ -41,9 +47,7 @@ const SyohinList = () => {
     { accessorKey: "name", id: "name", header: "商品名" },
     { accessorKey: "price", id: "price", header: "単価" },
     { accessorKey: "type", id: "type", header: "商品素材区分" },
-    { accessorKey: "category", id: "category", header: "商品カテゴリ" },
     { accessorKey: "categoryName", id: "categoryName", header: "商品カテゴリ" },
-    { accessorKey: "subCategory", id: "subCategory", header: "商品サブカテゴリ" },
     { accessorKey: "subCategoryName", id: "subCategoryName", header: "商品サブカテゴリ" },
     { accessorKey: "unit", id: "unit", header: "単位" },
     { accessorKey: "safetyStock", id: "safetyStock", header: "安全在庫" },
@@ -67,6 +71,12 @@ const SyohinList = () => {
       if (syohinTypeFilter !== "all") {
         query.append("syohinType", syohinTypeFilter === "product" ? "true" : "false");
       }
+      if (selectedCategory) {
+        query.append("category", parseInt(selectedCategory.value, 10));
+      }
+      if (selectedSubCategory) {
+        query.append("subCategory", parseInt(selectedSubCategory.value, 10));
+      }
 
       const response = await fetch(`http://localhost:8080/syohin?${query.toString()}`);
       if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
@@ -80,8 +90,6 @@ const SyohinList = () => {
           price: item.price ?? "",
           syohin_type: item.syohin_type,
           type: item.syohin_type ? "製品" : "素材",
-          category: item.category ?? 0,
-          subCategory: item.sub_category ?? 0,
           categoryName: item.category_name ?? "",
           subCategoryName: item.sub_category_name ?? "",
           unit: item.stock_unit ?? "",
@@ -134,6 +142,61 @@ const SyohinList = () => {
     setExpandedRows(newExpandedRows);
   };
 
+  // カテゴリー一覧を取得
+  const fetchCategories = async () => {
+    try {
+      const response = await fetch('http://localhost:8080/kbn/ITEM_CATEGORY');
+      if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+      const data = await response.json();
+      setCategories(data.map(item => ({
+        value: item.kbn_value,
+        label: item.kbn_value_name
+      })));
+    } catch (error) {
+      console.error('Error fetching categories:', error);
+    }
+  };
+
+  // サブカテゴリー一覧を取得
+  const fetchSubCategories = async (categoryValue) => {
+    try {
+      const response = await fetch(`http://localhost:8080/kbn/ITEM_SUB_CATEGORY?category=${categoryValue}`);
+      if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+      const data = await response.json();
+      setSubCategories(data.map(item => ({
+        value: item.kbn_value,
+        label: item.kbn_value_name,
+        category: item.category
+      })));
+    } catch (error) {
+      console.error('Error fetching subcategories:', error);
+    }
+  };
+
+  // サブカテゴリー選択時にカテゴリーを自動選択
+  const handleSubCategoryChange = (selectedSubCategory) => {
+    setSelectedSubCategory(selectedSubCategory);
+    if (selectedSubCategory) {
+      const category = categories.find(cat => cat.value === selectedSubCategory.category);
+      setSelectedCategory(category);
+    }
+  };
+
+  // コンポーネントマウント時にカテゴリー一覧を取得
+  useEffect(() => {
+    fetchCategories();
+  }, []);
+
+  // カテゴリー選択時にサブカテゴリーを取得
+  useEffect(() => {
+    if (selectedCategory) {
+      fetchSubCategories(selectedCategory.value);
+    } else {
+      setSubCategories([]);
+      setSelectedSubCategory(null);
+    }
+  }, [selectedCategory]);
+
   return (
     <div className="w-full max-w-full mx-auto bg-white rounded-lg shadow p-6">
       <h2 className="text-2xl font-bold mb-4">商品検索</h2>
@@ -156,19 +219,20 @@ const SyohinList = () => {
             className="w-full"
           />
         </div>
-        {/* カテゴリーとサブカテゴリーは区分値マスタから取得したサジェスト項目にする */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <InputField
+          <ComboBox
             label="カテゴリー"
-            value={searchCode}
-            onChange={(e) => setSearchCode(e.target.value)}
-            className="w-full"
+            options={categories}
+            value={selectedCategory}
+            onChange={setSelectedCategory}
+            placeholder="カテゴリーを選択"
           />
-          <InputField
+          <ComboBox
             label="サブカテゴリー"
-            value={searchCode}
-            onChange={(e) => setSearchCode(e.target.value)}
-            className="w-full"
+            options={subCategories}
+            value={selectedSubCategory}
+            onChange={handleSubCategoryChange}
+            placeholder="サブカテゴリーを選択"
           />
         </div>
         {/* 商品素材区分の判断はラジオボタンで行う */}

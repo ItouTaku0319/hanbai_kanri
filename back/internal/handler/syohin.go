@@ -36,8 +36,25 @@ func (h *SyohinHandler) GetSyohinList(c *gin.Context) {
 		syohinType = &isProduct
 	}
 
+	// カテゴリーとサブカテゴリーのパラメータを取得
+	category := c.Query("category")
+	subCategory := c.Query("subCategory")
+	// var category, subCategory *string
+	// if categoryStr := c.Query("category"); categoryStr != "" {
+	// 	categoryVal, err := strconv.Atoi(categoryStr)
+	// 	if err == nil {
+	// 		category = &categoryVal
+	// 	}
+	// }
+	// if subCategoryStr := c.Query("subCategory"); subCategoryStr != "" {
+	// 	subCategoryVal, err := strconv.Atoi(subCategoryStr)
+	// 	if err == nil {
+	// 		subCategory = &subCategoryVal
+	// 	}
+	// }
+
 	// サービス層を呼び出して在庫一覧を取得
-	syohinList, err := h.service.GetSyohinList(code, isLeftMatch, name, syohinType, lowStockOnly)
+	syohinList, err := h.service.GetSyohinList(code, isLeftMatch, name, syohinType, category, subCategory, lowStockOnly)
 	if err != nil {
 		utils.RespondWithError(c, http.StatusInternalServerError, err.Error())
 		return

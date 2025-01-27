@@ -18,7 +18,7 @@ func NewSyohinRepository(db *gorm.DB) *SyohinRepository {
 }
 
 // GetSyohinList は商品一覧を取得（検索条件付き）
-func (r *SyohinRepository) GetSyohinList(code string, isLeftMatch bool, name string, syohinType *bool, lowStockOnly bool) ([]models.Syohin, error) {
+func (r *SyohinRepository) GetSyohinList(code string, isLeftMatch bool, name string, syohinType *bool, category string, subCategory string, lowStockOnly bool) ([]models.Syohin, error) {
 	var syohinList []models.Syohin
 	query := r.db.Table("syohin").
 		Select(`
@@ -54,6 +54,20 @@ func (r *SyohinRepository) GetSyohinList(code string, isLeftMatch bool, name str
 	// 商品素材区分での検索
 	if syohinType != nil {
 		query = query.Where("syohin.syohin_type = ?", *syohinType)
+	}
+
+	// カテゴリーでの検索
+	if category != "" {
+		query = query.Where("syohin.category = ?", category)
+	}
+
+	// サブカテゴリーでの検索
+	if subCategory != "" {
+		// 先頭一桁を削除
+		if len(subCategory) > 1 {
+			subCategory = subCategory[1:]
+		}
+		query = query.Where("syohin.sub_category = ?", subCategory)
 	}
 
 	err := query.Find(&syohinList).Error

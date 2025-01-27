@@ -18,6 +18,9 @@ const Table = ({ columns, data, pageSize, totalRecords, onFetchData, renderSubCo
     initialState: { pagination: { pageIndex: 0, pageSize } },
   });
 
+  // expandedRowsがundefinedでないことを確認
+  const isRowExpanded = (rowId) => expandedRows && expandedRows.has(rowId);
+
   return (
     <div>
       {/* テーブル本体 */}
@@ -44,7 +47,7 @@ const Table = ({ columns, data, pageSize, totalRecords, onFetchData, renderSubCo
                     </td>
                   ))}
                 </tr>
-                {expandedRows.has(row.code) && renderSubComponent && (
+                {isRowExpanded(row.code) && renderSubComponent && (
                   <tr>
                     <td colSpan={columns.length}>
                       {renderSubComponent({ row })}

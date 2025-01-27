@@ -33,6 +33,10 @@ func main() {
 	syohinService := service.NewSyohinService(syohinRepo)
 	syohinHandler := handler.NewSyohinHandler(syohinService)
 
+	kbnItemRepo := repository.NewKbnItemRepository(config.DB)
+	kbnItemService := service.NewKbnItemService(kbnItemRepo)
+	kbnItemHandler := handler.NewKbnItemHandler(kbnItemService)
+
 	r := gin.Default()
 
 	// ✅ CORS ミドルウェアの適用
@@ -65,6 +69,7 @@ func main() {
 	r.GET("/zaiko", zaikoHandler.GetZaikoList)
 	r.GET("/syohin", syohinHandler.GetSyohinList)
 	r.GET("/syohin/:syohinCode/kosei", syohinHandler.GetSyohinKosei)
+	r.GET("/kbn/:kbnName", kbnItemHandler.GetKbnItems)
 
 	log.Println("Server starting on :8080")
 	if err := r.Run(":8080"); err != nil {
