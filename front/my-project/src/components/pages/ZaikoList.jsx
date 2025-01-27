@@ -11,7 +11,6 @@ const ZaikoList = () => {
   const [totalRecords, setTotalRecords] = useState(0);
   const [pageSize, setPageSize] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
-  const [hasSearched, setHasSearched] = useState(false); // 🔹 検索実行済みかどうかの状態
 
   // 検索条件の状態管理
   const [searchCode, setSearchCode] = useState("");
@@ -21,12 +20,12 @@ const ZaikoList = () => {
   const [leftMatch, setLeftMatch] = useState(false);
 
   const columns = [
-    { key: "code", label: "商品コード" },
-    { key: "name", label: "商品名" },
-    { key: "zaiko_su", label: "在庫数", align: "text-right" },
-    { key: "unit", label: "単位", align: "text-center" },
-    { key: "price", label: "単価", align: "text-right" },
-    { key: "reorderPoint", label: "発注点", align: "text-right" },
+    { accessorKey: "code", id: "code", header: "商品コード" },
+    { accessorKey: "name", id: "name", header: "商品名" },
+    { accessorKey: "zaiko_su", id: "zaiko_su", header: "在庫数" },
+    { accessorKey: "unit", id: "unit", header: "単位" },
+    { accessorKey: "price", id: "price", header: "単価" },
+    { accessorKey: "reorderPoint", id: "reorderPoint", header: "発注点" },
   ];
 
   const actions = [
@@ -74,7 +73,6 @@ const ZaikoList = () => {
       setTotalRecords(data.length);
       setPageSize(size);
       setCurrentPage(page);
-      setHasSearched(true); // 🔹 検索が実行されたことを記録
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -120,16 +118,13 @@ const ZaikoList = () => {
       </div>
 
       {/* 🔹 検索実行後にテーブルを表示 */}
-      {hasSearched && (
-        <Table
-          columns={columns}
-          data={inventory}
-          actions={actions}
-          totalRecords={totalRecords}
-          pageSize={pageSize}
-          onPageChange={fetchProducts}
-        />
-      )}
+      <Table
+        columns={columns}
+        data={inventory}
+        pageSize={pageSize}
+        totalRecords={totalRecords}
+        onFetchData={(page, size) => fetchProducts(page, size)} // ここを追加
+      />
     </div>
   );
 };
