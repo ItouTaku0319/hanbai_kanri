@@ -29,9 +29,10 @@ a:hover {
 body {
   margin: 0;
   display: flex;
-  place-items: center;
-  min-width: 320px;
+  flex-direction: column; /* 🔹 縦方向にコンテンツを並べる */
+  width: 100vw; /* 🔹 画面幅いっぱいにする */
   min-height: 100vh;
+  align-items: stretch; /* 🔹 子要素が親幅を最大限使う */
 }
 
 h1 {
