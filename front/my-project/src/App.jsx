@@ -17,7 +17,7 @@ function App() {
           <Route path="/orders" element={<OrderManagement />} />
           <Route path="/shipments" element={<ShippingForm />} />
           <Route path="/shipping/additional/:orderNumber" element={<AdditionalShippingForm />} />
-          <Route path="/inventory" element={<ZaikoList />} />
+          <Route path="/zaikoList" element={<ZaikoList />} />
           <Route path="/inventory/add" element={<div>在庫追加（実装予定）</div>} />
           <Route path="/lists" element={<div>一覧表示（実装予定）</div>} />
         </Routes>

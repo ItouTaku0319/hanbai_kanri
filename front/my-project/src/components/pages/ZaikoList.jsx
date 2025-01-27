@@ -7,7 +7,7 @@ import Table from "../common/Table";
 
 const ZaikoList = () => {
   // 在庫データの状態管理
-  const [inventory, setInventory] = useState([]);
+  const [zaiko, setZaiko] = useState([]);
   const [totalRecords, setTotalRecords] = useState(0);
   const [pageSize, setPageSize] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
@@ -59,7 +59,7 @@ const ZaikoList = () => {
       if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
 
       const data = await response.json();
-      setInventory(
+      setZaiko(
         data.map((item) => ({
           id: item.id ?? 0,
           code: item.syohin_code ?? "",
@@ -125,7 +125,7 @@ const ZaikoList = () => {
       {/* 🔹 検索実行後にテーブルを表示 */}
       <Table
         columns={columns}
-        data={inventory}
+        data={zaiko}
         pageSize={pageSize}
         totalRecords={totalRecords}
         onFetchData={(page, size) => fetchProducts(page, size)}

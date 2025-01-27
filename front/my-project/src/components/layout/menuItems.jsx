@@ -11,9 +11,9 @@ export const menuItems = [
       {
         label: "在庫業務",
         subMenu: [
-          { label: "在庫検索", path: "/inventory", icon: "🔍" },
-          { label: "在庫状況", path: "/inventory/status", icon: "📊" },
-          { label: "入出庫履歴", path: "/inventory/log", icon: "📖" }
+          { label: "在庫検索", path: "/zaikoList", icon: "🔍" },
+          { label: "在庫状況", path: "/zaiko/status", icon: "📊" },
+          { label: "入出庫履歴", path: "/zaiko/log", icon: "📖" }
         ]
       },
       {
