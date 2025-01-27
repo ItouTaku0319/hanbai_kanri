@@ -19,10 +19,10 @@ const Form = ({ fields, formData, setFormData, onSubmit, onCancel }) => {
   };
 
   return (
-    <form onSubmit={onSubmit} className="bg-white p-6 rounded-lg shadow-md mb-6">
-      <div className="grid grid-cols-2 gap-4">
+    <form onSubmit={onSubmit} className="bg-white p-6 rounded-lg shadow-md mb-6 w-full max-w-2xl">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         {fields.map((field) => (
-          <div key={field.name}>
+          <div key={field.name} className="w-full">
             <label className="block text-sm font-medium text-gray-700 mb-1">
               {field.label}
             </label>
@@ -31,12 +31,12 @@ const Form = ({ fields, formData, setFormData, onSubmit, onCancel }) => {
               name={field.name}
               value={formData[field.name]}
               onChange={handleChange}
-              className="w-full border rounded p-2"
+              className="w-full border rounded p-3 sm:p-2"
             />
           </div>
         ))}
       </div>
-      <div className="mt-4 flex justify-end gap-2">
+      <div className="mt-4 flex flex-col sm:flex-row justify-end gap-2">
         {onCancel && (
           <button
             type="button"

@@ -40,3 +40,31 @@
 .read-the-docs {
   color: #888;
 }
+
+/* スマホ用のスタイル */
+@media (max-width: 640px) {
+  .input-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+  }
+
+  .input-field {
+    width: 100%;
+    padding: 0.5em;
+  }
+
+  .label {
+    font-size: 0.875em;
+  }
+
+  .button {
+    padding: 0.5em 1em;
+    font-size: 0.875em;
+  }
+
+  .table th, .table td {
+    padding: 0.5em;
+    font-size: 0.875em;
+  }
+}

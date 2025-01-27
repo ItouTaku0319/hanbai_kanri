@@ -11,9 +11,12 @@ const CommonButton = ({ label, type = "default", onClick, disabled = false }) =>
 
   return (
     <button
-      className={`px-4 py-2 text-white rounded-lg focus:outline-none ${buttonStyles[type]} ${
-        disabled ? "opacity-50 cursor-not-allowed" : ""
-      }`}
+      className={`
+        py-2 px-6 sm:px-4 rounded-lg focus:outline-none
+        text-white transition-all min-w-[120px]
+        text-sm sm:text-base md:text-lg
+        ${buttonStyles[type]} ${disabled ? "opacity-50 cursor-not-allowed" : ""}
+      `}
       onClick={onClick}
       disabled={disabled}
     >

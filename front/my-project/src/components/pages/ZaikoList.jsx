@@ -89,31 +89,36 @@ const ZaikoList = () => {
       <h2 className="text-2xl font-bold mb-4">在庫検索</h2>
 
       <div className="space-y-4">
-        <SearchRow cols={2}>
-          <InputField 
-            label="商品コード" 
-            value={searchCode} 
-            onChange={(e) => setSearchCode(e.target.value)} 
-            className="48"
-            rightElement={
-              <CheckboxField label="先頭一致" checked={leftMatch} onChange={(e) => setLeftMatch(e.target.checked)} />
-            }
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <InputField
+            label="商品コード"
+            value={searchCode}
+            onChange={(e) => setSearchCode(e.target.value)}
+            className="w-full"
           />
-          <InputField label="商品名" value={searchName} onChange={(e) => setSearchName(e.target.value)} className="64" />
-        </SearchRow>
+          <InputField
+            label="商品名"
+            value={searchName}
+            onChange={(e) => setSearchName(e.target.value)}
+            className="w-full"
+          />
+        </div>
 
-        <SearchRow cols={2} hasSearchButton={true}>
-          <InputField 
-            label="在庫数以下" 
-            type="number" 
-            value={zaikoSuMax} 
-            onChange={(e) => setZaikoSuMax(e.target.value)} 
-            className="32"
-            rightElement={
-              <CheckboxField label="発注点の1.5倍以下" checked={lowStockOnly} onChange={(e) => setLowStockOnly(e.target.checked)} />
-            }
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <InputField
+            label="在庫数以下"
+            type="number"
+            value={zaikoSuMax}
+            onChange={(e) => setZaikoSuMax(e.target.value)}
+            className="w-full"
           />
-        </SearchRow>
+          <CheckboxField
+            label="発注点の1.5倍以下"
+            checked={lowStockOnly}
+            onChange={(e) => setLowStockOnly(e.target.checked)}
+          />
+        </div>
+
         <Button label="検索" type="primary" onClick={handleSearch} />
       </div>
 
@@ -123,7 +128,7 @@ const ZaikoList = () => {
         data={inventory}
         pageSize={pageSize}
         totalRecords={totalRecords}
-        onFetchData={(page, size) => fetchProducts(page, size)} // ここを追加
+        onFetchData={(page, size) => fetchProducts(page, size)}
       />
     </div>
   );
