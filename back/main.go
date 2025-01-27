@@ -29,6 +29,10 @@ func main() {
 	zaikoService := service.NewZaikoService(zaikoRepo)
 	zaikoHandler := handler.NewZaikoHandler(zaikoService)
 
+	syohinRepo := repository.NewSyohinRepository(config.DB)
+	syohinService := service.NewSyohinService(syohinRepo)
+	syohinHandler := handler.NewSyohinHandler(syohinService)
+
 	r := gin.Default()
 
 	// ✅ CORS ミドルウェアの適用
@@ -59,6 +63,8 @@ func main() {
 
 	// ルートの設定
 	r.GET("/zaiko", zaikoHandler.GetZaikoList)
+	r.GET("/syohin", syohinHandler.GetSyohinList)
+	r.GET("/syohin/:syohinCode/kosei", syohinHandler.GetSyohinKosei)
 
 	log.Println("Server starting on :8080")
 	if err := r.Run(":8080"); err != nil {

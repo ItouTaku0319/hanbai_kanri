@@ -53,18 +53,17 @@
     width: 100%;
     padding: 0.5em;
   }
+}
 
-  .label {
-    font-size: 0.875em;
+/* タブレット用のスタイル */
+@media (min-width: 641px) and (max-width: 1024px) {
+  .input-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1em;
   }
 
-  .button {
-    padding: 0.5em 1em;
-    font-size: 0.875em;
-  }
-
-  .table th, .table td {
-    padding: 0.5em;
-    font-size: 0.875em;
+  .input-field {
+    width: 100%;
   }
 }

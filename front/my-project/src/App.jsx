@@ -2,10 +2,10 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Layout from './components/layout/Layout';
 import OrderManagement from './components/pages/OrderManagement';
-import ZaikoList from './components/pages/ZaikoList';
+import SyohinList from './components/pages/syohin/SyohinList';
+import ZaikoList from './components/pages/zaiko/ZaikoList';
 import ShippingForm from './components/pages/ShippingForm';
 import AdditionalShippingForm from './components/pages/AdditionalShippingForm';
-import ProductList from "./components/pages/ProductList";  // パスを修正
 
 function App() {
   return (
@@ -13,7 +13,7 @@ function App() {
       <Layout>
         <Routes>
           <Route path="/" element={<Navigate to="/orders" replace />} />
-          <Route path="/products" element={<ProductList />} />
+          <Route path="/SyohinList" element={<SyohinList />} />
           <Route path="/orders" element={<OrderManagement />} />
           <Route path="/shipments" element={<ShippingForm />} />
           <Route path="/shipping/additional/:orderNumber" element={<AdditionalShippingForm />} />

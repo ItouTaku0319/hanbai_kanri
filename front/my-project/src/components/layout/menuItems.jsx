@@ -6,7 +6,7 @@ export const menuItems = [
     subMenu: [
       {
         label: "商品業務",
-        subMenu: [{ label: "商品一覧", path: "/products", icon: "📋" }]
+        subMenu: [{ label: "商品一覧", path: "/syohinList", icon: "📋" }]
       },
       {
         label: "在庫業務",

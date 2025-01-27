@@ -11,6 +11,8 @@ func SetupRouter(zaikoHandler *handler.ZaikoHandler) *gin.Engine {
 
 	// 在庫一覧取得のエンドポイント
 	r.GET("/zaiko", zaikoHandler.GetZaikoList)
+	// 商品一覧取得のエンドポイント
+	r.GET("/syohin", syohinHandler.GetSyohinList)
 
 	return r
 }

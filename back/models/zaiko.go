@@ -16,14 +16,17 @@ func (Zaiko) TableName() string {
 }
 
 type Syohin struct {
-	SyohinCode   string `json:"syohin_code" gorm:"primaryKey"`
-	SyohinName   string `json:"syohin_name"`
-	Price        int    `json:"price"`
-	SyohinType   bool   `json:"syohin_type"`
-	Category     int    `json:"category"`
-	StockUnit    string `json:"stock_unit"`
-	SafetyStock  int    `json:"safety_stock"`
-	ReorderPoint int    `json:"reorder_point"`
+	SyohinCode      string `json:"syohin_code" gorm:"primaryKey"`
+	SyohinName      string `json:"syohin_name"`
+	Price           int    `json:"price"`
+	SyohinType      bool   `json:"syohin_type"`
+	Category        int    `json:"category"`
+	SubCategory     int    `json:"sub_category"`
+	CategoryName    string `json:"category_name"`
+	SubCategoryName string `json:"sub_category_name"`
+	StockUnit       string `json:"stock_unit"`
+	SafetyStock     int    `json:"safety_stock"`
+	ReorderPoint    int    `json:"reorder_point"`
 }
 
 // 明示的にテーブル名を指定

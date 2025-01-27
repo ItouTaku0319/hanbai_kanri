@@ -1,9 +1,8 @@
 import React, { useState } from "react";
-import InputField from "../common/InputField";
-import SearchRow from "../common/SearchRow";
-import CheckboxField from "../common/CheckboxField";
-import Button from "../common/Button";
-import Table from "../common/Table";
+import InputField from "../../common/InputField";
+import CheckboxField from "../../common/CheckboxField";
+import Button from "../../common/Button";
+import Table from "../../common/Table";
 
 const ZaikoList = () => {
   // 在庫データの状態管理
@@ -95,6 +94,9 @@ const ZaikoList = () => {
             value={searchCode}
             onChange={(e) => setSearchCode(e.target.value)}
             className="w-full"
+            rightElement={
+              <CheckboxField label="先頭一致" checked={leftMatch} onChange={(e) => setLeftMatch(e.target.checked)} />
+            }
           />
           <InputField
             label="商品名"
@@ -111,11 +113,13 @@ const ZaikoList = () => {
             value={zaikoSuMax}
             onChange={(e) => setZaikoSuMax(e.target.value)}
             className="w-full"
-          />
-          <CheckboxField
+            rightElement={
+              <CheckboxField
             label="発注点の1.5倍以下"
             checked={lowStockOnly}
             onChange={(e) => setLowStockOnly(e.target.checked)}
+          />
+            }
           />
         </div>
 

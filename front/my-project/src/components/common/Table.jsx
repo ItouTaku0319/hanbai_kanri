@@ -8,7 +8,7 @@ import {
 } from "@tanstack/react-table";
 import Button from "./Button";
 
-const Table = ({ columns, data, pageSize, onFetchData }) => {
+const Table = ({ columns, data, pageSize, totalRecords, onFetchData, renderSubComponent, expandedRows }) => {
   const table = useReactTable({
     columns,
     data,
@@ -26,36 +26,33 @@ const Table = ({ columns, data, pageSize, onFetchData }) => {
           <thead className="bg-gray-200">
             {table.getHeaderGroups().map((headerGroup) => (
               <tr key={headerGroup.id}>
-                {headerGroup.headers.map((column) => (
-                  <th
-                    key={column.id}
-                    className="p-2 cursor-pointer"
-                    onClick={column.column.getToggleSortingHandler()}
-                  >
-                    {flexRender(column.column.columnDef.header, column.getContext())}
-                    {column.column.getIsSorted() === "asc" ? " ▲" : column.column.getIsSorted() === "desc" ? " ▼" : ""}
+                {headerGroup.headers.map((header) => (
+                  <th key={header.id} className="p-2 cursor-pointer">
+                    {flexRender(header.column.columnDef.header, header.getContext())}
                   </th>
                 ))}
               </tr>
             ))}
           </thead>
           <tbody>
-            {data.length > 0 ? (
-              table.getRowModel().rows.map((row) => (
-                <tr key={row.id} className="border-b border-gray-200 even:bg-gray-100">
-                  {row.getVisibleCells().map((cell) => (
-                    <td key={cell.id} className="p-2">
-                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
+            {data.map((row, i) => (
+              <React.Fragment key={row.code || i}>
+                <tr className="border-b">
+                  {columns.map(column => (
+                    <td key={column.id} className="px-6 py-4">
+                      {column.cell ? column.cell({ row }) : row[column.accessorKey]}
                     </td>
                   ))}
                 </tr>
-              ))
-            ) : (
-              <tr>
-                <td colSpan={columns.length} className="p-4 text-center text-gray-500">
-                </td>
-              </tr>
-            )}
+                {expandedRows.has(row.code) && renderSubComponent && (
+                  <tr>
+                    <td colSpan={columns.length}>
+                      {renderSubComponent({ row })}
+                    </td>
+                  </tr>
+                )}
+              </React.Fragment>
+            ))}
           </tbody>
         </table>
       </div>
