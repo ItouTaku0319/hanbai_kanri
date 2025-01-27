@@ -7,6 +7,7 @@ type KbnItem struct {
 	KbnName      string `json:"kbn_name"`
 	KbnValueName string `json:"kbn_value_name"`
 	HyojiJun     string `json:"hyoji_jun"`
+	Category     string `json:"category"`
 }
 
 // 明示的にテーブル名を指定

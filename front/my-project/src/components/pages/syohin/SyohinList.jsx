@@ -158,15 +158,15 @@ const SyohinList = () => {
   };
 
   // サブカテゴリー一覧を取得
-  const fetchSubCategories = async (categoryValue) => {
+  const fetchSubCategories = async () => {
     try {
-      const response = await fetch(`http://localhost:8080/kbn/ITEM_SUB_CATEGORY?category=${categoryValue}`);
+      const response = await fetch(`http://localhost:8080/kbn/ITEM_SUB_CATEGORY`);
       if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
       const data = await response.json();
       setSubCategories(data.map(item => ({
         value: item.kbn_value,
         label: item.kbn_value_name,
-        category: item.category
+        category: item.category,     // カテゴリID (← APIが返すようにする)
       })));
     } catch (error) {
       console.error('Error fetching subcategories:', error);
@@ -176,26 +176,21 @@ const SyohinList = () => {
   // サブカテゴリー選択時にカテゴリーを自動選択
   const handleSubCategoryChange = (selectedSubCategory) => {
     setSelectedSubCategory(selectedSubCategory);
+    
     if (selectedSubCategory) {
-      const category = categories.find(cat => cat.value === selectedSubCategory.category);
-      setSelectedCategory(category);
+      const matchingCategory = subCategories.find(sub => sub.value === selectedSubCategory.value)?.category;
+      if (matchingCategory) {
+        console.log("Setting category to:", matchingCategory); // デバッグ用ログ
+        setSelectedCategory(matchingCategory.toString());
+      }
     }
   };
 
   // コンポーネントマウント時にカテゴリー一覧を取得
   useEffect(() => {
     fetchCategories();
+    fetchSubCategories();
   }, []);
-
-  // カテゴリー選択時にサブカテゴリーを取得
-  useEffect(() => {
-    if (selectedCategory) {
-      fetchSubCategories(selectedCategory.value);
-    } else {
-      setSubCategories([]);
-      setSelectedSubCategory(null);
-    }
-  }, [selectedCategory]);
 
   return (
     <div className="w-full max-w-full mx-auto bg-white rounded-lg shadow p-6">
